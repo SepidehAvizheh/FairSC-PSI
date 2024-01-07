@@ -14,20 +14,15 @@ using sharedStruct for uint256;
 
 
  mapping(uint => address) public party;
-  //mapping(address=>uint[2])public publickeys;
 
 uint256 public gx = uint256(0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798);
 uint256 public gy = uint256(0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8);
 
 
-  //uint firstcome;
-  //uint e;
- //uint64 idx=0;
- //uint constant RoundTime= 2;
+
  uint count=0;
 
 uint amount;
-//uint256 MRoot;
 uint256[] com;
 uint256[] comkey;
 uint256 e;
@@ -38,43 +33,14 @@ uint256[] v;
 uint256 Mrphi;
 
 
-//struct Enc{
-//    uint256 Cval;
- //   uint256 Rval;
-//}
-
-//struct ZKP{
-//    uint256 a1;
-//   uint256 a2;
-//   uint256 a3;
- //   uint256 rhat;
- //   uint256 rr;
-//}
-//struct ptxtZKP{
- //       point a1;
- //       point a2;
- //       uint256 rhat;
- //       uint256 rr;
- //       }
-//struct Gid{
- //   uint256 gId;
- //   uint256 in1;
- //   uint256 in2;
- //   uint256 out;
-//}
 mapping (uint => sharedStruct.point) partykey;
-//sharedStruct.Enc[] Ctx2;
 mapping (uint => sharedStruct.Enc) Ctx2;
 mapping (uint => sharedStruct.Enc) ciphertexts1;
 mapping (uint => sharedStruct.Enc) ciphertexts2;
-//sharedStruct.Enc ciphertexts1;
-//sharedStruct.Enc ciphertexts2;
 mapping (uint => sharedStruct.ZKP) proof;
-//sharedStruct.ZKP proof;
 
-//sharedStruct.Enc[]  Trace1;
 mapping (uint => sharedStruct.Enc) Trace1;
-//sharedStruct.Enc[]  Trace2;
+
 mapping (uint => sharedStruct.Enc) Trace2;
 
 uint256[] rkey;
@@ -82,20 +48,6 @@ uint256[] vkey;
 uint256 rootd;
 
 
-
-  // Modulus for public keys
-  //uint constant pp = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F;
-
-  // Base point (generator) G
-  //uint constant Gx = 0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798;
-  //uint constant Gy = 0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8;
-
-  // New point (generator) Y
-  //uint constant Yx = 98038005178408974007512590727651089955354106077095278304532603697039577112780;
-  //uint constant Yy = 1801119347122147381158502909947365828020117721497557484744596940174906898953;
-
-  // Modulus for private keys (sub-group)
-  //uint constant nn = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141;
 
 
 
@@ -124,7 +76,6 @@ function Hack(CryptoLib _clib) public {
       party[count]=_party;
       amount=_amount;
       (partykey[count].x, partykey[count].y)= _CryptoLib.genPubkey(_party, gx, gy);
-      //publickeys[_party]=_pk;
       state=State.INIT;
       return true;
   }
@@ -254,27 +205,8 @@ function Judge2(uint256 _idx, string memory _st) public returns (bool flag){
             transferCFair(msg.sender,amount);
             flag=true;
         }
-        //else if (keccak256(abi.encodePacked(_st))==keccak256(abi.encodePacked("reject")) && state == State.OPENING){
-        //   bool result=CryptoLib.RencZKPVerify(Ctx1[_idx], partykey[1], Ctx2[_idx], partykey[2], Pk[_idx]);
-           //bool result=;
-        //   if(result==true){
-         //      transfer(party[1],amount);
-         //      emit FairPSI("Coin Compensated PSI");
-         //      state=State.TERMINATED;
-         //      flag=false;
-         //  }
-          // else{
-           //    transferCFair(msg.sender,amount);
-           //    flag=true;
-           //}
-        }
-        //else if (keccak256(abi.encodePacked(_st))==keccak256(abi.encodePacked("Refund")) && state==State.JUDGE){
-        //    transferCFair(msg.sender,amount);
-         //   flag=true;
-        //}
-       // else{
-         //   flag=false;
-        //}
+      }
+
     }
 
 
@@ -287,12 +219,8 @@ function Judge2(uint256 _idx, string memory _st) public returns (bool flag){
 
 
 function transfer(address _to, uint _amount) internal returns (bool success){
-     // _to.transfer(_amount);
-    //to.transfer works because we made the address above payable.
-    //(success, )=_to.call{value: _amount}("");
     //(success, )=_to.call{value: _amount}("");
     (success, )=_to.call.value(_amount)(" ");
-    //success=_to.send(_amount);
     }
 
 
@@ -307,15 +235,6 @@ function transferCFair(address _to, uint _amount) internal {
     emit FairPSI("Complete Fairness");
     //state=State.TERMINATED;
 }
- //function withdraw (uint _amount) public returns(bool flag){
-   //  if(msg.sender==party[2] && _amount=amount && (state != State.OPENING || state != State.REFUND)){
-    //     transfer(msg.sender,_amount);
-     //    flag=true;
-     //}
-     //else{
-      //   flag=false;
-     //}
-    //}
 
     function JudgeIncorrectAggReenc() public onlyParty2  returns (bool flag){
 
@@ -330,7 +249,6 @@ function transferCFair(address _to, uint _amount) internal {
                     transferCCP(party[1],amount);
                     flag=false;
                 }
-            //}
 
           }
     }
@@ -341,17 +259,8 @@ function transferCFair(address _to, uint _amount) internal {
 
             bool result;
             uint256 leaf;
-            //bool stop;
-            //stop=false;
-            //ctxs.length=3
-            //for (uint i=0; i<_ctxs.length; i++)
-            //{
                 leaf=uint256(sha256(abi.encodePacked(_ctx1.Cval.x,_ctx1.Cval.y,_ctx1.Rval.x,_ctx1.Rval.y)));
                 result= _CryptoLib.verifyMerkleProof(e, leaf, _MPCtx, _idx[0]);
-              //  if(result[i]==false){
-              //    stop=true;
-              //  }
-          //  }
 
                 if(result==true){
                     sharedStruct.Enc memory temp;
@@ -370,8 +279,6 @@ function transferCFair(address _to, uint _amount) internal {
                     transferCCP(party[1],amount);
                     flag=false;
                 }
-            //}
-
           }
     }
 
@@ -545,7 +452,6 @@ function VerifyCoeffTrace(uint256[] memory _coeffidx, sharedStruct.Enc[] memory 
                         flag=false;
                     }
 
-                //}
             }
             else{
                         transferCFair(party[2],amount);
